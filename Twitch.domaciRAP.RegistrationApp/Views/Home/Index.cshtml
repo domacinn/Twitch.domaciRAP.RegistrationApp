@@ -1,0 +1,180 @@
+﻿@model List<Events>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @*<h1 class="display-4">Welcome to domaciRAP's twitch programming sessions</h1>
+        <p>Learn about programming, development and have fun</p>
+
+        <h1 style="color:#2449F2;">Break 10 minutes</h1>
+        <h2 style="color:#2449F2;">Be right back...</h2>
+
+        <hr />
+        <br />*@
+
+    <h1>Events List</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Created By  Email</th>
+                <th scope="col">Presenter</th>
+                <th scope="col">Attendees#</th>
+                @*<th scope="col">Is Active?</th>*@
+                <th scope="col" style="width:300px;">Register</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Descirption</td>
+                    <td>@item.StardDateTime</td>
+                    <td>@item.CreatedBy</td>
+                    <td>@item.CreatedByEmail</td>
+                    <td>@item.Presneter</td>
+                    <td>@item.AmountOfAttendees</td>
+                    @*<td>@item.IsActive</td>*@
+                    <td><button class="btn btn-primary"><i class="bi bi-plus-circle"></i> Register</button></td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="card text-center mb-4">
+        <div class="card-header bg-secondary" style="color:white; font-size:30px;">
+            @item.Name
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@item.Descirption</h5>
+            <!--  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
+            <p><i class="bi bi-calendar-check-fill"></i> @item.StardDateTime</p>
+            <p><i class="bi bi-person-circle"></i> Presenter | @item.Presneter (@item.PresenterEmail)</p>
+
+            <button class="btn btn-primary" onclick="RegisterEvent(@item.Id,'@item.Name')"><i class="bi bi-plus-circle"></i> Register</button>
+        </div>
+        <div class="card-footer text-muted">
+
+        </div>
+    </div>
+}
+
+
+<!-- STARTIN MODAL DIALOG - WINDOW-->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="registrationFormModalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header btn btn-primary">
+                <h5 class="modal-title" id="eventTitleId"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">First name <span style="color:red;font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" id="firstNameId" placeholder="First name" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02">Last name <span style="color:red;font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" id="lastNameId" placeholder="Last name" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom01">Email <span style="color:red;font-weight:bold">*</span></label>
+                            <input type="text" class="form-control" id="emailId" placeholder="Email" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom03">City</label>
+                            <input type="text" class="form-control" id="validationCustom03" placeholder="City" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid city.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom04">State</label>
+                            <input type="text" class="form-control" id="validationCustom04" placeholder="State" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom05">Zip</label>
+                            <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid zip.
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="SaveRegistration()">Register</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    
+
+    function RegisterEvent(id, eventTitle)
+    {
+        $('#eventTitleId').text(eventTitle);
+        $('#registrationFormModalId').modal('show');
+    }
+
+    //function - saving registration (event function by button click)
+    function SaveRegistration()
+    {
+        //checking the mandatory fields
+        if ($('#firstNameId').val() != "" && $('#lastNameId').val() != "" && $('#emailId').val() != "") {
+            //alert("Validation OK");
+            toastr.success('Validation ok', 'NICE :)'); 
+        }
+        else {
+            toastr.error('Validation not ok', 'BAD :)')
+        }
+    }
+</script>
