@@ -118,21 +118,21 @@
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label for="validationCustom03">City</label>
-                            <input type="text" class="form-control" id="validationCustom03" placeholder="City" required>
+                            <input type="text" class="form-control" id="cityId" placeholder="City" required>
                             <div class="invalid-feedback">
                                 Please provide a valid city.
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="validationCustom04">State</label>
-                            <input type="text" class="form-control" id="validationCustom04" placeholder="State" required>
+                            <input type="text" class="form-control" id="stateId" placeholder="State" required>
                             <div class="invalid-feedback">
                                 Please provide a valid state.
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="validationCustom05">Zip</label>
-                            <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" required>
+                            <input type="text" class="form-control" id="zipId" placeholder="Zip" required>
                             <div class="invalid-feedback">
                                 Please provide a valid zip.
                             </div>
@@ -164,11 +164,26 @@
     {
         //checking the mandatory fields
         if ($('#firstNameId').val() != "" && $('#lastNameId').val() != "" && $('#emailId').val() != "") {
-            //alert("Validation OK");
-            toastr.success('Validation ok', 'NICE :)'); 
+
+            //AJAX call: sending data to back-end for registration
+            $.ajax({
+                method: 'POST',
+                url: 'home/SaveRegistration',
+                data: {
+                    FirstName: $('#firstNameId').val(),
+                    LastName: $('#lastNameId').val(),
+                    Email: $('#emailId').val(),
+                    City: $('#cityId').val(),
+                    State: $('#stateId').val(),
+                    Zip: $('#zipId').val()
+                }
+            })
+                .done(function (msg) {
+                    toastr.success('Data send successfully to the backe-end.');
+            });
         }
         else {
-            toastr.error('Validation not ok', 'BAD :)')
+            toastr.error('Firstname, Lastname & Email are mandatory fields.', 'Validation failed');
         }
     }
 </script>

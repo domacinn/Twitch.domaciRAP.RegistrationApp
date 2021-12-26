@@ -91,6 +91,11 @@ namespace Twitch.domaciRAP.RegistrationApp.Controllers
             return View(_eventsList);
         }
 
+        [HttpPost]
+        public IActionResult SaveRegistration(EventRegistration model)
+        {
+            return Ok();
+        }
         public IActionResult Privacy()
         {
             return View();
